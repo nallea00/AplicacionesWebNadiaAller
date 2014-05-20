@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	   <bean id="officeManager" class="es.unileon.ulebank.service.SimpleOfficeManager">
+         <property name="office" ref="generalOffice"/>
+       </bean>
+       
+       <bean id="generalOffice" class="es.unileon.ulebank.domain.Office">
+         <constructor-arg name="name" value="Oficina General"/>
+         <constructor-arg name="street" value="Fernandez Ladreda"/>
+         <constructor-arg name="zip" value="24121"/>
+         <constructor-arg name="phone" value="999888777"/>
+         <constructor-arg name="id" ref="idGeneralOffice"/>
+         <constructor-arg name="employeeList">
+       		<list>
+                <ref bean="employee1"/>
+                <ref bean="employee2"/>
+            </list>
+         </constructor-arg>
+       </bean>
+       
+       <bean id="idGeneralOffice" class="es.unileon.ulebank.handler.OfficeHandler">
+       	 <constructor-arg name="number" value="1234"/>
+       </bean>
+
+       <bean id="employee1" class="es.unileon.ulebank.domain.Employee">
+         <constructor-arg name="name" value="Luna"/>
+         <constructor-arg name="surname" value="Lovegood"/>
+         <constructor-arg name="address" value="Hogwarts"/>
+         <constructor-arg name="salary" value="1350"/>
+         <constructor-arg name="idEmployee" ref="idEmployee1"/>
+       </bean>
+       
+       <bean id="employee2" class="es.unileon.ulebank.domain.Employee">
+         <constructor-arg name="name" value="Harry"/>
+         <constructor-arg name="surname" value="Potter"/>
+         <constructor-arg name="address" value="Hogwarts"/>
+         <constructor-arg name="salary" value="2410"/>
+         <constructor-arg name="idEmployee" ref="idEmployee2"/>
+       </bean>
+       
+       <bean id="idEmployee1" class="es.unileon.ulebank.handler.DNIHandler">
+       	 <constructor-arg name="dni" value="71461175"/>
+       	 <constructor-arg name="letter" value="Z"/>
+       </bean>
+       
+        <bean id="idEmployee2" class="es.unileon.ulebank.handler.DNIHandler">
+       	 <constructor-arg name="dni" value="71463395"/>
+       	 <constructor-arg name="letter" value="A"/>
+       </bean>
+
+       <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+         <property name="basename" value="messages"/>
+       </bean>
+       
+ 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
+    <context:component-scan base-package="es.unileon.ulebank.web" />
+
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven/>
+    
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+         <property name="prefix" value="/WEB-INF/views/"></property>
+         <property name="suffix" value=".jsp"></property>        
+      </bean>
+
+</beans>
